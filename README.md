@@ -1,0 +1,1 @@
+This project is a simple and functional version of a key generator program, where the user enters the length of the key, in addition to the typical options that allow modeling a key (numbers, lowercase and uppercase characters, symbols or special characters)

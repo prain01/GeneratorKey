@@ -3,8 +3,6 @@ package Gui;
 import Domain.Key;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class Gui extends JFrame {
 
@@ -29,43 +27,54 @@ public class Gui extends JFrame {
     private JPanel panel4;
     private JPanel panel5;
     private JPanel panel5_1;
+    private String version = "1.1";
 
     private final ImageIcon logo = new ImageIcon("src/main/java/Images/garfield.png");
 
     public Gui() {
         setTitle("Generator Key");
-        setSize(400, 290);
+        setSize(450, 320);
         setIconImage(logo.getImage());
         setLocationRelativeTo(null);
-        setResizable(false);
+        //setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         initComponents();
     }
 
     private void initComponents() {
         setContentPane(panelMain);
+        labelNumberVersion.setText(version);
         listeners();
     }
 
     private void listeners() {
-        exitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                    System.exit(0);
-            }
-        });
+        exitButton.addActionListener(e -> System.exit(0));
 
-        generateButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String key = generateKey.generateKey(Integer.parseInt(textFieldInputLength.getText()), createArrBooleans());
-                keyTextField.setText(key);
+        generateButton.addActionListener(e -> {
+            String textInput = textFieldInputLength.getText();
+            String key;
+            boolean isNumeric;
+            try {
+                Integer.parseInt(textInput);
+                isNumeric = true;
+            } catch (NumberFormatException exception) {
+                isNumeric = false;
             }
+            if (isNumeric) {
+                if (Integer.parseInt(textInput) > 0) {
+                    key = generateKey.generateKey(Integer.parseInt(textFieldInputLength.getText()), createArrBooleans());
+                } else {
+                    key = "";
+                }
+            } else {
+                key = "";
+            }
+            keyTextField.setText(key);
         });
     }
 
     private boolean[] createArrBooleans() {
-        boolean[] booleans = {lowercaseRadioButton.isSelected(), upperCaseRadioButton.isSelected(), numbersRadioButton.isSelected(), symbolsRadioButton.isSelected()};
-        return booleans;
+        return new boolean[]{lowercaseRadioButton.isSelected(), upperCaseRadioButton.isSelected(), numbersRadioButton.isSelected(), symbolsRadioButton.isSelected()};
     }
+
 }
